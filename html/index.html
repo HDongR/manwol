@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>ddtd</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/danfojs@0.3.3/lib/bundle.min.js"></script>  -->
+    </head>
+    <body>
+        <div>
+            <span>파일업로드:</span><input type="file" id="fileUpload" name="fileUpload">
+        </div>
+    </body>
+
+<script>
+    var hwp = new ActiveXObject('HWPFrame.HwpObject.1');
+    hwp.HAction.Execute('Open', 'C:\\Users\\fbtjd\\Downloads\\만월_동의서(param).hwp');
+    // hwp.HAction.GetDefault('InsertText', hwp.HParameterSet.HInsertText.HSet);	// 텍스트 입력
+    // hwp.HParameterSet.HInsertText.Text = '테스트입니다.';
+    // hwp.HAction.Execute('InsertText', hwp.HParameterSet.HInsertText.HSet);
+    // hwp.HAction.Run('BreakPara');	// 엔터 입력
+    // hwp.HAction.GetDefault('InsertText', hwp.HParameterSet.HInsertText.HSet);	// 텍스트 입력
+    // hwp.HParameterSet.HInsertText.Text = '테스트입니다222';
+    // hwp.HAction.Execute('InsertText', hwp.HParameterSet.HInsertText.HSet);
+    // hwp.HAction.Run('SelectAll');	// 모두선택
+    // hwp.HAction.Run('CharShapeBold');	// 진하게
+    // hwp.HAction.Run('Cancel');	// 블록해제
+</script>
+<script>
+    let dataMap = new Map();
+
+    function handleFileSelect(file) {
+        var reader = new FileReader();
+        reader.readAsText(file, "utf-8");
+        reader.onload = function() {
+            var txt = reader.result.split(/[\r\n]+/);
+
+            for(var i=0; i<txt.length; i++){
+                let row = txt[i];
+                var data = row.split(",");
+                if(i==0){ //colomn
+
+                }else{ //data
+                    let name = data[8];
+                    let birth = data[10];
+
+                    let key = name + '_' + birth;
+                    let dataList = [];
+
+                    for (var j = 0; j < data.length; j++) {
+                        dataList.push(data[j]);
+                    }
+
+                    if(dataMap.has(key)){
+                        let dList = dataMap.get(key);
+                        dList.push(dataList);
+                    }else{
+                        dataMap.set(key, [dataList]);
+                    }
+                }
+                
+            }
+
+            console.log(dataMap);
+        };
+
+ 
+    }
+
+    
+    function parse(df){
+        let columns = df.$columns;
+        let data = df.$data;
+        let dataIncolumnFormat = df.$dataIncolumnFormat;
+
+        for(var i=0; i<data.length; i++){
+            let d = data[i];
+            let key = d[7] + '_' + d[9];
+
+            
+           
+        }
+
+        console.log(dataMap);
+    }
+
+    $(document).ready(function(){
+        $("#fileUpload").change(function(e){
+            let file =  $('input[type=file]')[0].files[0];
+            // alert($('input[type=file]')[0].files[0].name); //파일이름
+            // alert($("#fileUpload")[0].files[0].type); // 파일 타임
+            // alert($("#fileUpload")[0].files[0].size); // 파일 크기
+            //  $('input[type=file]')[0].files[0].name;
+            //  $("#imgUpload")[0].files[0].type;
+            //  $("#imgUpload")[0].files[0].size;
+
+            handleFileSelect(file);
+        }); 
+    });
+
+ 
+</script>
+</html>

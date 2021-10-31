@@ -1,0 +1,3 @@
+RESULT_DIR=C:\Users\fbtjd\Downloads\rst\
+CSV_PATH=C:\Users\fbtjd\Downloads\test2.csv
+HWP_PATH=C:\Users\fbtjd\Downloads\만월_동의서(param).hwp
